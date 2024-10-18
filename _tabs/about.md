@@ -30,7 +30,7 @@ Address: Hangzhou, Zhejing Province, China
   - [Elective] Artifical Intelligence
 
 ## Publication
-1. Jiasheng Li, Ruichen Ni, Zhixin Zeng, Xiong Zhang. [A solid shell material point method for efficient large deformation modeling of thin structures.](http://dx.doi.org/10.1002/nme.7359) International Journal for Numerical Methods in Engineering. 125(1):7359, 2024.
-2. Zhixin Zeng, Ruichen Ni, Xiong Zhang, Yan Liu. [An explicit phase field material point method for modeling dynamic fracture problems.](http://dx.doi.org/10.1002/nme.7231) International Journal for Numerical Methods in Engineering. 124(12): 2680-2708, 2023.
-3. Ruichen Ni, Jiasheng Li, Xiong Zhang, Xu Zhou, Xiaoxiao Cui. [An immersed boundary-material point method for shock-structure interaction and dynamic fracture.](http://dx.doi.org/10.1016/j.jcp.2022.111558) Journal of Computational Physics, 470:111558, 2022.
-4. Ruichen Ni, Xiong Zhang. [A precise critical time step formula for the explicit material point method.](http://dx.doi.org/10.1002/NME.6506) International Journal for Numerical Methods in Engineering. 121:4989-5016, 2020.
+1. Jiasheng Li, Ruichen Ni, Zhixin Zeng, Xiong Zhang. [A solid shell material point method for efficient large deformation modeling of thin structures.](https://dx.doi.org/10.1002/nme.7359) International Journal for Numerical Methods in Engineering. 125(1):7359, 2024.
+2. Zhixin Zeng, Ruichen Ni, Xiong Zhang, Yan Liu. [An explicit phase field material point method for modeling dynamic fracture problems.](https://dx.doi.org/10.1002/nme.7231) International Journal for Numerical Methods in Engineering. 124(12): 2680-2708, 2023.
+3. Ruichen Ni, Jiasheng Li, Xiong Zhang, Xu Zhou, Xiaoxiao Cui. [An immersed boundary-material point method for shock-structure interaction and dynamic fracture.](https://dx.doi.org/10.1016/j.jcp.2022.111558) Journal of Computational Physics, 470:111558, 2022.
+4. Ruichen Ni, Xiong Zhang. [A precise critical time step formula for the explicit material point method.](https://dx.doi.org/10.1002/NME.6506) International Journal for Numerical Methods in Engineering. 121:4989-5016, 2020.
