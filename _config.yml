@@ -16,10 +16,10 @@ timezone:
 
 title: Ruichen Ni # the main title
 
-tagline: Prefer to call me "Eishin" # it will display as the subtitle
+tagline: PhD Graduate|Tsinghua University # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  A personal profile for Ruichen Ni (倪锐晨), a phD graduate from Aerospace School of Tsinghua University and majors in computational mechanics.
+  A personal profile for Ruichen Ni (倪锐晨), a PhD graduate from Aerospace School of Tsinghua University and majors in computational mechanics.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -98,7 +98,7 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: "/assets/img/favicons/web-app-manifest-512x512.png"
+avatar: "/assets/img/favicons/web-app-manifest-192x192.png"
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
@@ -224,4 +224,4 @@ jekyll-archives:
     tag: /tags/:name/
     category: /categories/:name/
 
-#port: 8080
+port: 8080
