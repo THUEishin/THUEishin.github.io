@@ -5,7 +5,7 @@ order: 4
 ---
 ## Profile
 
-![Desktop View](/assets/biograph/potrait.jpg){: width="240" height="240" .w-40 .left}
+![Personal Portrait](/assets/biograph/potrait.jpg){: width="240" height="240" .w-40 .left}
 
 <font face="Times New Roman" size=4>Ruichen Ni <br style="line-height:2em">
 Degree: PhD Graduate · Tsinghua University <br style="line-height:2em">
