@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Articles on Ruichen Ni&#39;s Blog</title>
+    <link>https://thueishin.github.io/post/</link>
+    <description>Recent content in Articles on Ruichen Ni&#39;s Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 06 Jun 2025 13:53:42 +0800</lastBuildDate>
+    <atom:link href="https://thueishin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>自动注册机制的工厂模式</title>
+      <link>https://thueishin.github.io/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Fri, 06 Jun 2025 13:53:42 +0800</pubDate>
+      <guid>https://thueishin.github.io/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>通过自动注册机制搭配工厂模式以消除初始化子类时的&lt;code&gt;if-else&lt;/code&gt;语句（或&lt;code&gt;switch-case&lt;/code&gt;语句），能够大幅简化代码的撰写。</description>
+    </item>
+  </channel>
+</rss>
