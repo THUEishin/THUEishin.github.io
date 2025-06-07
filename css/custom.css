@@ -102,3 +102,66 @@
     display: none;
   }
 }
+
+.code-wrapper {
+  background-color: #1e1e1e;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  box-shadow: 0 0 0 1px #333;
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2d2d2d;
+  color: #ccc;
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #444;
+}
+
+.language-label {
+  font-size: 1em;
+  text-transform: lowercase;
+}
+
+.copy-button {
+  background-color: #444;
+  color: #eee;
+  border: none;
+  padding: 0.3em 0.6em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background 0.2s;
+}
+
+.copy-button:hover {
+  background-color: #666;
+}
+
+/* Scrollbar (as before) */
+.code-wrapper pre::-webkit-scrollbar {
+  height: 8px;
+}
+.code-wrapper pre::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 4px;
+}
+.code-wrapper pre::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+.code-wrapper pre {
+  margin: 0;
+  padding: 1em;
+  overflow: auto;
+  color: #ddd;
+  background-color: #1e1e1e;
+  font-family: "Fira Code", monospace;
+  scrollbar-width: thin;
+  scrollbar-color: #666 transparent;
+}
