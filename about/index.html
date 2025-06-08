@@ -61,6 +61,31 @@
       
     
 	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '\\(', right: '\\)', display: false}
+    ],
+    throwOnError: false
+  });">
+</script>
+
+<script src="/js/copy-code.js" defer></script>
+
+
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
   </head><body class="ma0 avenir bg-near-white production">
 
     
@@ -97,6 +122,12 @@
           <li class="list f5 f4-ns fw4 dib pr3">
             <a class="hover-white white-90 no-underline" href="/post/" title="Archive page">
               Archive
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/gallery/" title="Gallery page">
+              Gallery
             </a>
           </li>
           
@@ -149,7 +180,7 @@
 
 <figure align="left">
   <img 
-    src="/images/potrait.jpg"
+    src="/images/biograph/potrait.jpg"
     alt="Personal Portrait"
      width="240"
      height="240" />
@@ -210,7 +241,21 @@ Ruichen Ni <br style="line-height:2em">
   
 </ul>
 <div class="mt6 instapaper_ignoref">
-      
+      <div id="disqus_thread"></div>
+<script>
+  var disqus_config = function () {
+    this.page.url = 'https:\/\/thueishin.github.io\/about\/';
+    this.page.identifier = 'about\\index.md';
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://thueishin.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
       
       </div>
     </div>
@@ -220,7 +265,24 @@ Ruichen Ni <br style="line-height:2em">
 
 
 
-</aside>
+
+      <nav id="toc-sidebar" class="mt4">
+        <h3>Table of Contents</h3>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#profile">Profile</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#publication">Publication</a>
+      <ul>
+        <li><a href="#english">English</a></li>
+        <li><a href="#chinese">Chinese</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </nav>
+      
+    </aside>
 
   </article>
 
@@ -235,5 +297,9 @@ Ruichen Ni <br style="line-height:2em">
   </div>
 </footer>
 
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <script src="/js/lightbox-options.js"></script>
   </body>
 </html>
