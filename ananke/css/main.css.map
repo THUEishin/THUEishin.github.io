@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "main.css",
-	"sourceRoot": "D:/Github/blog/EishinBlog/THUEishin.github.io",
+	"sourceRoot": "D:/Github/blog/EishinBlog/PersonalBlogHugo",
 	"sources": [
 		"ananke/css/main.css"
 	],
