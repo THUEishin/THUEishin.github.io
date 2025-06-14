@@ -166,6 +166,26 @@
             <div class="mb3 pa4 mid-gray overflow-hidden">
     
       <div class="f6">
+        June 14, 2025
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/" class="link black dim">
+        移动构造函数（浅拷贝）和具名返回值优化(NRVO)
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      针对数据量特别大的对象实例，运算过程中都要特别关注对其的拷贝操作，例如大型矩阵的乘法运算\(A_{r \times s}\cdot B_{s \times t}\) 等等。出于代码的复用性考虑，我们会将这些运算封装成函数调用。在C++新标准前，通常的做法是将对象实例通过形参列表将引用或者指针传入以避免大数据的拷贝操作，在C++17新标准之后，我们可以采用C++编译器的具名返回值优化(NRVO)功能，并搭配浅拷贝的移动构造函数来避免大数据的拷贝操作。
+    </div>
+  <a href="/post/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+  </div>
+
+        </div>
+      
+        <div class="w-100 w-30-l mb4 relative bg-white">
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
         May 21, 2025
       </div>
     

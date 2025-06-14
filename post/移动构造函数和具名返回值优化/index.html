@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>移动构造函数（浅拷贝）和具名返回值优化(NRVO) | Ruichen Ni&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="针对数据量特别大的对象实例，运算过程中都要特别关注对其的拷贝操作，例如大型矩阵的乘法运算\(A_{r \times s}\cdot B_{s \times t}\) 等等。出于代码的复用性考虑，我们会将这些运算封装成函数调用。在C&#43;&#43;新标准前，通常的做法是将对象实例通过形参列表将引用或者指针传入以避免大数据的拷贝操作，在C&#43;&#43;17新标准之后，我们可以采用C&#43;&#43;编译器的具名返回值优化(NRVO)功能，并搭配浅拷贝的移动构造函数来避免大数据的拷贝操作。">
+    <meta name="generator" content="Hugo 0.147.7">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    <meta name="author" content="Ruichen Ni">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.8d048772ae72ab11245a0e296d1f2a36d3e3dd376c6c867394d6cc659c68fc37.css" >
+
+
+
+
+    
+
+
+    
+      
+<link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon" />
+
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://thueishin.github.io/post/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">
+    
+
+    <meta property="og:url" content="https://thueishin.github.io/post/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/">
+  <meta property="og:site_name" content="Ruichen Ni&#39;s Blog">
+  <meta property="og:title" content="移动构造函数（浅拷贝）和具名返回值优化(NRVO)">
+  <meta property="og:description" content="针对数据量特别大的对象实例，运算过程中都要特别关注对其的拷贝操作，例如大型矩阵的乘法运算\(A_{r \times s}\cdot B_{s \times t}\) 等等。出于代码的复用性考虑，我们会将这些运算封装成函数调用。在C&#43;&#43;新标准前，通常的做法是将对象实例通过形参列表将引用或者指针传入以避免大数据的拷贝操作，在C&#43;&#43;17新标准之后，我们可以采用C&#43;&#43;编译器的具名返回值优化(NRVO)功能，并搭配浅拷贝的移动构造函数来避免大数据的拷贝操作。">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-06-14T14:24:13+08:00">
+    <meta property="article:modified_time" content="2025-06-14T14:24:13+08:00">
+    <meta property="article:tag" content="Programming">
+
+  <meta itemprop="name" content="移动构造函数（浅拷贝）和具名返回值优化(NRVO)">
+  <meta itemprop="description" content="针对数据量特别大的对象实例，运算过程中都要特别关注对其的拷贝操作，例如大型矩阵的乘法运算\(A_{r \times s}\cdot B_{s \times t}\) 等等。出于代码的复用性考虑，我们会将这些运算封装成函数调用。在C&#43;&#43;新标准前，通常的做法是将对象实例通过形参列表将引用或者指针传入以避免大数据的拷贝操作，在C&#43;&#43;17新标准之后，我们可以采用C&#43;&#43;编译器的具名返回值优化(NRVO)功能，并搭配浅拷贝的移动构造函数来避免大数据的拷贝操作。">
+  <meta itemprop="datePublished" content="2025-06-14T14:24:13+08:00">
+  <meta itemprop="dateModified" content="2025-06-14T14:24:13+08:00">
+  <meta itemprop="wordCount" content="227">
+  <meta itemprop="keywords" content="Programming">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="移动构造函数（浅拷贝）和具名返回值优化(NRVO)">
+  <meta name="twitter:description" content="针对数据量特别大的对象实例，运算过程中都要特别关注对其的拷贝操作，例如大型矩阵的乘法运算\(A_{r \times s}\cdot B_{s \times t}\) 等等。出于代码的复用性考虑，我们会将这些运算封装成函数调用。在C&#43;&#43;新标准前，通常的做法是将对象实例通过形参列表将引用或者指针传入以避免大数据的拷贝操作，在C&#43;&#43;17新标准之后，我们可以采用C&#43;&#43;编译器的具名返回值优化(NRVO)功能，并搭配浅拷贝的移动构造函数来避免大数据的拷贝操作。">
+
+      
+    
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '\\(', right: '\\)', display: false}
+    ],
+    throwOnError: false
+  });">
+</script>
+
+<script src="/js/copy-code.js" defer></script>
+
+
+<link rel="stylesheet" href="/css/custom.css">
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+
+  </head><body class="ma0 avenir bg-near-white production">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        Ruichen Ni&#39;s Blog
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/" title="Home page">
+              Home
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/post/" title="Archive page">
+              Archive
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/gallery/" title="Gallery page">
+              Gallery
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/tags/" title="Tags page">
+              Tags
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  
+  <article class="flex-l mw8 center ph3 flex-wrap justify-between">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked ttu">
+          
+        Articles
+      </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">移动构造函数（浅拷贝）和具名返回值优化(NRVO)</h1>
+      
+      <p class="tracked"><strong>Ruichen Ni</strong>
+      </p>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2025-06-14T14:24:13+08:00">June 14, 2025</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="需求来源">需求来源</h2>
+<p>最近笔者在给UI前端撰写一个简单的数学库，满足一些简单常用的矩阵操作，例如基本的加减乘除、线性方程组（\(A\cdot x=b\)）的求解，基于SVD的矩阵特征值求解等等。</p>
+<p>一开始考虑过采用LAPACK形式的函数接口，以LAPACK库中求解最小二乘法系数的函数为例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>lapack_int <span style="color:#a6e22e">LAPACKE_dgels</span>(<span style="color:#66d9ef">int</span> matrix_layout, <span style="color:#66d9ef">char</span> trans, lapack_int m,
+</span></span><span style="display:flex;"><span>                         lapack_int n, lapack_int nrhs, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> a,
+</span></span><span style="display:flex;"><span>                         lapack_int lda, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> b, lapack_int ldb);
+</span></span></code></pre></div><p>LAPACK库为了节约内存，将计算结果储存在输入的<code>(double*) b</code>中，并且根据问题形状（<code>m</code>和<code>n</code>）的大小关系，<code>(double*) b</code>对计算结果的储存形式也会发生变化。和UI前端的技术人员聊过之后，他们一致觉得最好不要让他们再来考虑输入输出的存储形式，并且对函数的调用形式越接近<code>MATLAB</code>的方式越好。</p>
+<p>还是以求解最小二乘法系数为例，初步的接口形式定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// Matrix is a to-be-implemented class for matrix data storage
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// The Least-Squared problem of Ax=b is (A^T)Ax=(A^T)b. 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// The return value contains the coefficient result.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Matrix <span style="color:#a6e22e">MATH_PACK_GELS</span>(<span style="color:#66d9ef">const</span> Matrix<span style="color:#f92672">&amp;</span> A, <span style="color:#66d9ef">const</span> Matrix<span style="color:#f92672">&amp;</span> b);
+</span></span></code></pre></div><p>那么函数内的临时对象作为返回值返回时就需要关注大数据的拷贝操作，从而避免运算效率的降低。</p>
+<h2 id="具名返回值优化nrvo">具名返回值优化(NRVO)</h2>
+<p>关于编译器的返回值优化(RVO)和具名返回值优化(NRVO)可以参见<a href="https://pvs-studio.com/en/blog/terms/6516/">这篇文章</a>。这里我们简单摘录一下这两个名词所代表的含义：</p>
+<ol>
+<li>返回值优化(RVO): RVO是指在函数中直接构造返回值到调用函数的返回位置的优化。也就是说，编译器会将函数的返回值直接在调用者的上下文中构造，从而避免了复制或移动构造函数的调用。RVO最常见的情况是当函数返回一个临时对象时。</li>
+<li>具名返回值优化(NRVO):  NRVO则是RVO的一个特殊情况，它适用于当函数返回一个具名的局部对象时。编译器会尝试消除这个局部对象和接收对象之间的复制或移动操作。</li>
+</ol>
+<blockquote>
+<p><b>Tips</b>: 经后续小节测试，当我开启<code>Debug</code>模式时，编译器还是会在退出函数体时调用构造函数（优先移动构造函数，其次复制构造函数）；当开启<code>Release</code>模式时(编译选项&rsquo;/O2&rsquo;)，<code>msvc</code>的编译器会进行返回值优化不再调用构造函数。</p></blockquote>
+<h2 id="移动构造函数">移动构造函数</h2>
+<p>为了避免<code>Debug</code>模式下或编译器不支持具名返回值优化功能时的大数据拷贝操作，还是推荐增加移动构造函数来实现对数据的浅拷贝。以一个简单的类定义为例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// &#34;MyClass.h&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Default constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	MyClass() {
+</span></span><span style="display:flex;"><span>		array_ <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">double</span>[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>		array_[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>		array_[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>		array_[<span style="color:#ae81ff">2</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>		array_[<span style="color:#ae81ff">3</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Copy constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	MyClass(<span style="color:#66d9ef">const</span> MyClass<span style="color:#f92672">&amp;</span> other) {
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Copy Constructor&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>		array_ <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">double</span>[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> (size_t i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">4</span>; i<span style="color:#f92672">++</span>)
+</span></span><span style="display:flex;"><span>			array_[i] <span style="color:#f92672">=</span> other.array_[i];
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Move constructor
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	MyClass(MyClass<span style="color:#f92672">&amp;&amp;</span> other) {
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Move Constructor&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>		array_ <span style="color:#f92672">=</span> other.array_;
+</span></span><span style="display:flex;"><span>		other.array_ <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Deconstructor
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#f92672">~</span>MyClass() { 
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;De-Constructor&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (array_) <span style="color:#66d9ef">delete</span>[] array_; 
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Member parameter
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> array_;
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="具名返回值优化nrvo测试">具名返回值优化(NRVO)测试</h2>
+<h3 id="测试代码">测试代码</h3>
+<p>以下是对具名返回值优化(NRVO)功能测试的主程序代码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;MyClass.h&#34;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>MyClass <span style="color:#a6e22e">getObject</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	MyClass new_object <span style="color:#f92672">=</span> MyClass();
+</span></span><span style="display:flex;"><span>	cout <span style="color:#f92672">&lt;&lt;</span> new_object.array_ <span style="color:#f92672">&lt;&lt;</span> endl;  <span style="color:#75715e">/// To see if the array_ pointer is shallow copied
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">return</span> new_object;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    MyClass object <span style="color:#f92672">=</span> getObject();
+</span></span><span style="display:flex;"><span>	cout <span style="color:#f92672">&lt;&lt;</span> object.array_ <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="release模式">Release模式</h3>
+<p>Console打印结果如下（<b>注意</b>：具体的数组首地址结果可能不一致）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>000002093D262540
+</span></span><span style="display:flex;"><span>000002093D262540
+</span></span><span style="display:flex;"><span>De-Constructor
+</span></span></code></pre></div><h3 id="debug模式">Debug模式</h3>
+<p>Console打印结果如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>00000213991A23A0
+</span></span><span style="display:flex;"><span>Move Constructor
+</span></span><span style="display:flex;"><span>De-Constructor
+</span></span><span style="display:flex;"><span>00000213991A23A0
+</span></span><span style="display:flex;"><span>De-Constructor
+</span></span></code></pre></div><p>可以看到，在<code>Debug</code>模式下返回内部临时变量时会调用构造函数（优先移动构造函数），并且在退出函数体时会调用临时变量的析构函数。而在<code>Release</code>模式下退出函数体不会调用返回值的构造函数，也不会调用临时变量的析构函数。</p>
+<ul class="pa0">
+  
+   <li class="list di">
+     <a href="/tags/programming/" class="link f5 grow br-pill ba ph3 pv2 mb2 dib black sans-serif no-underline">Programming</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      <div id="disqus_thread"></div>
+<script>
+  var disqus_config = function () {
+    this.page.url = 'https:\/\/thueishin.github.io\/post\/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96\/';
+    this.page.identifier = 'post\\移动构造函数和具名返回值优化.md';
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://thueishin.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD/">模板函数返回类型推断</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">自动注册机制的工厂模式</a>
+        </li>
+	    
+    </ul>
+</div>
+
+
+      <nav id="toc-sidebar" class="mt4">
+        <h3>Table of Contents</h3>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#需求来源">需求来源</a></li>
+    <li><a href="#具名返回值优化nrvo">具名返回值优化(NRVO)</a></li>
+    <li><a href="#移动构造函数">移动构造函数</a></li>
+    <li><a href="#具名返回值优化nrvo测试">具名返回值优化(NRVO)测试</a>
+      <ul>
+        <li><a href="#测试代码">测试代码</a></li>
+        <li><a href="#release模式">Release模式</a></li>
+        <li><a href="#debug模式">Debug模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+      </nav>
+      
+    </aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://thueishin.github.io/" >
+    &copy;  Ruichen Ni's Blog 2025 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <script src="/js/lightbox-options.js"></script>
+  </body>
+</html>

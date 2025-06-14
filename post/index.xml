@@ -6,8 +6,15 @@
     <description>Recent content in Articles on Ruichen Ni&#39;s Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 May 2025 13:14:52 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Jun 2025 14:24:13 +0800</lastBuildDate>
     <atom:link href="https://thueishin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>移动构造函数（浅拷贝）和具名返回值优化(NRVO)</title>
+      <link>https://thueishin.github.io/post/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Sat, 14 Jun 2025 14:24:13 +0800</pubDate>
+      <guid>https://thueishin.github.io/post/%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%85%B7%E5%90%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%BC%98%E5%8C%96/</guid>
+      <description>针对数据量特别大的对象实例，运算过程中都要特别关注对其的拷贝操作，例如大型矩阵的乘法运算\(A_{r \times s}\cdot B_{s \times t}\) 等等。出于代码的复用性考虑，我们会将这些运算封装成函数调用。在C++新标准前，通常的做法是将对象实例通过形参列表将引用或者指针传入以避免大数据的拷贝操作，在C++17新标准之后，我们可以采用C++编译器的具名返回值优化(NRVO)功能，并搭配浅拷贝的移动构造函数来避免大数据的拷贝操作。</description>
+    </item>
     <item>
       <title>Marriage Certificate</title>
       <link>https://thueishin.github.io/post/marriage-certificate/</link>
