@@ -6,28 +6,35 @@
     <description>Recent content in Articles on Ruichen Ni&#39;s Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 06 Jun 2025 17:09:35 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 21 May 2025 13:14:52 +0800</lastBuildDate>
     <atom:link href="https://thueishin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>基于YOLO LITE的人脸口罩检测</title>
-      <link>https://thueishin.github.io/post/%E5%9F%BA%E4%BA%8Eyolo-lite%E7%9A%84%E4%BA%BA%E8%84%B8%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B/</link>
-      <pubDate>Fri, 06 Jun 2025 17:09:35 +0800</pubDate>
-      <guid>https://thueishin.github.io/post/%E5%9F%BA%E4%BA%8Eyolo-lite%E7%9A%84%E4%BA%BA%E8%84%B8%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B/</guid>
-      <description>模式识别课程的期末大作业，对图片内的人脸进行检测定位，并判断是否佩戴口罩。在个人电脑上对YOLO-LITE模型从随机初始化开始训练，最终得到的模型性能结果为mAP@.5约为15%，CPU推断速度为29FPS。</description>
-    </item>
-    <item>
-      <title>自动注册机制的工厂模式</title>
-      <link>https://thueishin.github.io/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
-      <pubDate>Fri, 06 Jun 2025 13:53:42 +0800</pubDate>
-      <guid>https://thueishin.github.io/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
-      <description>通过自动注册机制搭配工厂模式以消除初始化子类时的&lt;code&gt;if-else&lt;/code&gt;语句（或&lt;code&gt;switch-case&lt;/code&gt;语句），能够大幅简化代码的撰写。</description>
-    </item>
     <item>
       <title>Marriage Certificate</title>
       <link>https://thueishin.github.io/post/marriage-certificate/</link>
       <pubDate>Wed, 21 May 2025 13:14:52 +0800</pubDate>
       <guid>https://thueishin.github.io/post/marriage-certificate/</guid>
       <description>Congratulations to ourself for marriage certificate!</description>
+    </item>
+    <item>
+      <title>模板函数返回类型推断</title>
+      <link>https://thueishin.github.io/post/%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD/</link>
+      <pubDate>Wed, 23 Oct 2024 11:13:00 +0800</pubDate>
+      <guid>https://thueishin.github.io/post/%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD/</guid>
+      <description>结合C++11的新特性&lt;code&gt;auto&lt;/code&gt;和&lt;code&gt;decltype&lt;/code&gt;对模板函数的返回类型进行推断，增加了泛型编程的灵活性。</description>
+    </item>
+    <item>
+      <title>自动注册机制的工厂模式</title>
+      <link>https://thueishin.github.io/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 05 Aug 2024 13:53:42 +0800</pubDate>
+      <guid>https://thueishin.github.io/post/%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6%E7%9A%84%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>通过自动注册机制搭配工厂模式以消除初始化子类时的&lt;code&gt;if-else&lt;/code&gt;语句（或&lt;code&gt;switch-case&lt;/code&gt;语句），能够大幅简化代码的撰写。</description>
+    </item>
+    <item>
+      <title>基于YOLO LITE的人脸口罩检测</title>
+      <link>https://thueishin.github.io/post/%E5%9F%BA%E4%BA%8Eyolo-lite%E7%9A%84%E4%BA%BA%E8%84%B8%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B/</link>
+      <pubDate>Mon, 29 Jun 2020 17:09:35 +0800</pubDate>
+      <guid>https://thueishin.github.io/post/%E5%9F%BA%E4%BA%8Eyolo-lite%E7%9A%84%E4%BA%BA%E8%84%B8%E5%8F%A3%E7%BD%A9%E6%A3%80%E6%B5%8B/</guid>
+      <description>模式识别课程的期末大作业，对图片内的人脸进行检测定位，并判断是否佩戴口罩。在个人电脑上对YOLO-LITE模型从随机初始化开始训练，最终得到的模型性能结果为mAP@.5约为15%，CPU推断速度为29FPS。</description>
     </item>
   </channel>
 </rss>
